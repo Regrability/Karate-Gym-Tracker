@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Основная тема вашего приложения -->
+    <style name="Theme.Src" parent="android:Theme.Material.NoActionBar">
+    </style>
+
+    <!-- Тема для экрана загрузки -->
+    <style name="SplashTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Фон для экрана загрузки -->
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <!-- Убираем заголовок и включаем полноэкранный режим -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+</resources>
