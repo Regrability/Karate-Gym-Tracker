@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.src.ui.theme.UserViewModel
+import com.example.src.ui.theme.dataBases.UserViewModel
 
 @Composable
 fun LoginScreen(
@@ -50,16 +50,12 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 100.dp), // Отступ сверху для размещения элементов ниже верхнего края
+                .padding(top = 200.dp), // Отступ сверху для размещения элементов ниже верхнего края
             verticalArrangement = Arrangement.Top, // Центрирование по вертикали
             horizontalAlignment = Alignment.CenterHorizontally // Центрирование по горизонтали
         ) {
 
-            Image(
-                painter = painterResource(R.drawable.karate2),
-                contentDescription = "Значок",
-                modifier = Modifier.size(170.dp)
-            )
+
 
             Text(
                 text = "Вход в приложение",

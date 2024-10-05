@@ -1,4 +1,4 @@
-package com.example.src.ui.theme
+package com.example.src.ui.theme.dataBases
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -33,6 +33,9 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE username = :username")
     suspend fun getUserByUsername(username: String): User?
+
+    @Query("DELETE FROM users WHERE username = :username")
+    suspend fun deleteUserByUsername(username: String)
 
 }
 
@@ -87,6 +90,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     fun insertUser(user: User) {
         viewModelScope.launch {
             userDao.insertUser(user)
+        }
+    }
+
+    // Метод для удаления пользователя по имени
+    fun deleteUser(username: String) {
+        viewModelScope.launch {
+            userDao.deleteUserByUsername(username)
         }
     }
 }

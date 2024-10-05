@@ -11,6 +11,7 @@ import com.example.src.ui.theme.screens.LoginScreen
 import com.example.src.ui.theme.screens.RegisterScreen
 import com.example.src.ui.theme.screens.MainScreen
 
+
 @Composable
 fun MainNavGraph(
     navController: NavHostController = rememberNavController(),
@@ -54,7 +55,9 @@ fun MainNavGraph(
 
         // Экран регистрации
         composable("MainScreen") {
-            MainScreen()
+            SrcTheme(darkTheme = true) {
+                MainScreen()
+            }
         }
     }
 }

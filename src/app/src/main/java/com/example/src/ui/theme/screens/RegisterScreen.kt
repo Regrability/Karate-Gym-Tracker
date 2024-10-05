@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.sp
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.src.ui.theme.User
-import com.example.src.ui.theme.UserViewModel
+import com.example.src.ui.theme.dataBases.User
+import com.example.src.ui.theme.dataBases.UserViewModel
 
 @Composable
 fun RegisterScreen(
@@ -33,6 +33,7 @@ fun RegisterScreen(
     // Переменные для хранения введённых логина и пароля
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var repeatPassword by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") } // Переменная для хранения ошибок
 
     // Основной контейнер с наложением элементов
@@ -51,16 +52,10 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 100.dp), // Отступ сверху для размещения элементов ниже верхнего края
+                .padding(top = 200.dp), // Отступ сверху для размещения элементов ниже верхнего края
             verticalArrangement = Arrangement.Top, // Центрирование по вертикали
             horizontalAlignment = Alignment.CenterHorizontally // Центрирование по горизонтали
         ) {
-
-            Image(
-                painter = painterResource(R.drawable.karate2),
-                contentDescription = "Значок",
-                modifier = Modifier.size(170.dp)
-            )
 
             Text(
                 text = "Регистрация",
@@ -96,6 +91,17 @@ fun RegisterScreen(
                 visualTransformation = PasswordVisualTransformation() // Скрытие введённого текста
             )
 
+            // Поле для ввода пароля
+            TextField(
+                value = repeatPassword,
+                onValueChange = { repeatPassword = it }, // Обновление состояния пароля
+                label = { Text("Повторите пароль") }, // Метка для текстового поля
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .alpha(0.9f), // Легкая прозрачность для лучшей видимости
+                visualTransformation = PasswordVisualTransformation() // Скрытие введённого текста
+            )
+
             Spacer(modifier = Modifier.height(16.dp)) // Отступ перед кнопками
 
             Button(
@@ -108,7 +114,21 @@ fun RegisterScreen(
                         if (user != null) {
                             errorMessage = "Этот логин уже занят"
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                        } else {
+                        }
+
+                        else if (username.length < 4 ) {
+                            errorMessage = "Логин cлишком короткий"
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        else if (password.length < 5) {
+                            errorMessage = "Пароль cлишком короткий"
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        else if (password != repeatPassword){
+                            errorMessage = "непрвильно введён пароль"
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        else {
                             // Если пользователя с таким логином нет, добавляем его в базу данных
                             userViewModel.insertUser(User(username = username, password = password))
                             Toast.makeText(context, "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show()
