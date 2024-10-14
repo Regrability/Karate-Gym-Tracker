@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.src.ui.theme.dataBases.UserViewModel
 
@@ -40,7 +41,7 @@ fun LoginScreen(
     ) {
         // Изображение используется как фон
         Image(
-            painter = painterResource(R.drawable.fon2), // Замените на ваше изображение
+            painter = painterResource(R.drawable.fon3),
             contentDescription = "Фон",
             contentScale = ContentScale.Crop, // Масштабирование изображения, чтобы покрыть весь экран
             modifier = Modifier.fillMaxSize() // Изображение заполняет весь экран
@@ -63,7 +64,7 @@ fun LoginScreen(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 ),
-                color = MaterialTheme.colorScheme.onBackground // Цвет текста для контраста
+                color = Color.Cyan // Цвет текста для контраста
             )
 
             Spacer(modifier = Modifier.height(16.dp)) // Отступ между элементами
@@ -75,7 +76,13 @@ fun LoginScreen(
                 label = { Text("Логин") }, // Метка для текстового поля
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .alpha(0.9f) // Легкая прозрачность для лучшей видимости
+                    .alpha(0.9f), // Легкая прозрачность для лучшей видимости
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,  // Цвет текста при фокусе
+                    unfocusedTextColor = Color.Blue, // Цвет текста без фокуса
+                    focusedLabelColor = Color.Blue,  // Цвет метки при фокусе
+                    unfocusedLabelColor = Color.Blue // Цвет метки без фокуса
+                )
             )
 
             Spacer(modifier = Modifier.height(8.dp)) // Отступ между полями
@@ -88,7 +95,13 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .alpha(0.9f), // Легкая прозрачность для лучшей видимости
-                visualTransformation = PasswordVisualTransformation() // Скрытие введённого текста
+                visualTransformation = PasswordVisualTransformation(),// Скрытие введённого текста
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Blue,  // Цвет текста при фокусе
+                    unfocusedTextColor = Color.Blue, // Цвет текста без фокуса
+                    focusedLabelColor = Color.Blue,  // Цвет метки при фокусе
+                    unfocusedLabelColor = Color.Blue // Цвет метки без фокуса
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp)) // Отступ перед кнопками

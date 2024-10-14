@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.src.ui.theme.screens.LoginScreen
 import com.example.src.ui.theme.screens.RegisterScreen
 import com.example.src.ui.theme.screens.MainScreen
-
+import com.example.src.ui.theme.screens.GumScreen // Импортируем экран для зала
 
 @Composable
 fun MainNavGraph(
@@ -53,10 +53,39 @@ fun MainNavGraph(
             )
         }
 
-        // Экран регистрации
+        // Экран главного меню с темной темой
         composable("MainScreen") {
             SrcTheme(darkTheme = true) {
-                MainScreen()
+                MainScreen(
+                    changeTheme = {
+                        navController.navigate("MainScreenWhiteTheme")
+                    },
+                    goToGumScreen = { gumId -> // Параметр для перехода на экран зала
+                        navController.navigate("GumScreen/$gumId")
+                    }
+                )
+            }
+        }
+
+        // Экран главного меню с светлой темой
+        composable("MainScreenWhiteTheme") {
+            SrcTheme(darkTheme = false) {
+                MainScreen(
+                    changeTheme = {
+                        navController.navigate("MainScreen")
+                    },
+                    goToGumScreen = { gumId -> // Параметр для перехода на экран зала
+                        navController.navigate("GumScreen/$gumId")
+                    }
+                )
+            }
+        }
+
+        // Экран для отображения информации о зале
+        composable("GumScreen/{gumId}") { backStackEntry ->
+            val gumId = backStackEntry.arguments?.getString("gumId")?.toIntOrNull() // Получаем ID зала
+            if (gumId != null) {
+                GumScreen(gumId = gumId) // Передаем ID зала в экран
             }
         }
     }

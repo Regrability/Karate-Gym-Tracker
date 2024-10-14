@@ -1,37 +1,52 @@
 package com.example.src.ui.theme.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.src.R
-import com.example.src.ui.theme.SrcTheme
 import com.example.src.ui.theme.dataBases.Gum
 import com.example.src.ui.theme.dataBases.GumViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.src.ui.theme.dataBases.UserViewModel
 
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MessageCard(message: Gum) {
+fun MessageCard(message: Gum,
+                goToGumSreen : (Int) -> Unit
+) {
     Surface(
         modifier = Modifier
             .padding(8.dp)
-            .border(2.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium), // Добавляем обводку
+            .border(2.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium)
+            .combinedClickable(
+            onClick = {  },
+            onLongClick = {
+                goToGumSreen(message.id)
+            }
+        ), // Добавляем обводку
         shape = MaterialTheme.shapes.medium,
         tonalElevation = 2.dp
     ) {
@@ -69,13 +84,15 @@ fun MessageCard(message: Gum) {
 }
 
 
-
 @Composable
-fun MainScreen(gumViewModel: GumViewModel = viewModel()) {
-
-
+fun MainScreen(
+    gumViewModel: GumViewModel = viewModel(),
+    changeTheme: () -> Unit,
+    goToGumScreen: (Int) -> Unit
+) {
     // Вызываем метод для получения всех залов
     gumViewModel.getAllGums()
+
     // Используем observeAsState для получения списка Gums
     val gums = gumViewModel.gums.observeAsState(listOf()) // Наблюдаем за LiveData
 
@@ -83,32 +100,55 @@ fun MainScreen(gumViewModel: GumViewModel = viewModel()) {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp) // Добавляем отступы для всей колонки
         ) {
-            items(gums.value) { gum ->
-                // Отображаем карточки с залами
-                MessageCard(
-                    message = gum
-                )
+            // Оборачиваем кнопки в Row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(2.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium) // Добавляем обводку
+                    .padding(8.dp),            // Отступы внутри Row после обводки
+                horizontalArrangement = Arrangement.spacedBy(8.dp) // Пространство между кнопками
+            ) {
+                Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .weight(1f)          // Каждая кнопка займет половину ширины
+                        .padding(8.dp),        // Отступы вокруг кнопки
+                    shape = RectangleShape  // Прямоугольная форма кнопки
+                ) {
+                    Text("Найти на карте")
+                }
+                Button(
+                    onClick = { changeTheme() },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp),
+                    shape = RectangleShape  // Прямоугольная форма кнопки
+                ) {
+                    Text("Сменить тему")
+                }
+            }
+
+            // Пространство между кнопками и списком
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Отображаем список залов
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(gums.value) { gum ->
+                    // Отображаем карточки с залами
+                    MessageCard(
+                        message = gum,
+                        goToGumSreen = goToGumScreen
+                    )
+                }
             }
         }
     }
 }
-
-
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun DarkPreview() {
-    SrcTheme(darkTheme = false) {
-        MainScreen()
-
-    }
-}
-
-
 
