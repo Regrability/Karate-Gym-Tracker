@@ -75,17 +75,35 @@ fun MainNavGraph(
                         navController.navigate("MainScreen")
                     },
                     goToGumScreen = { gumId -> // Параметр для перехода на экран зала
-                        navController.navigate("GumScreen/$gumId")
+                        navController.navigate("GumScreenWhiteTheme/$gumId")
                     }
                 )
             }
         }
 
-        // Экран для отображения информации о зале
+        // Экран для отображения информации о зале с темной темой
         composable("GumScreen/{gumId}") { backStackEntry ->
             val gumId = backStackEntry.arguments?.getString("gumId")?.toIntOrNull() // Получаем ID зала
             if (gumId != null) {
-                GumScreen(gumId = gumId) // Передаем ID зала в экран
+                SrcTheme(darkTheme = true) {
+                    GumScreen(
+                        gumId = gumId,
+                        onMainScreen = { navController.navigate("MainScreen") } // Передаем ID зала в экран
+                    )
+                }
+            }
+        }
+
+        // Экран для отображения информации о зале с белой темой
+        composable("GumScreenWhiteTheme/{gumId}") { backStackEntry ->
+            val gumId = backStackEntry.arguments?.getString("gumId")?.toIntOrNull() // Получаем ID зала
+            if (gumId != null) {
+                SrcTheme(darkTheme = false) {
+                    GumScreen(
+                        gumId = gumId,
+                        onMainScreen = { navController.navigate("MainScreenWhiteTheme") } // Передаем ID зала в экран
+                    )
+                }
             }
         }
     }

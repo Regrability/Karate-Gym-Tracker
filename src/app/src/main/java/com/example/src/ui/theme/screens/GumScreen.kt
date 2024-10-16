@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -37,8 +39,9 @@ import com.example.src.ui.theme.dataBases.UserViewModel
 
 
 @Composable
-fun GumScreen(gumId: Int, gumViewModel: GumViewModel = viewModel()) {
-
+fun GumScreen(gumId: Int, gumViewModel: GumViewModel = viewModel(),
+              onMainScreen: () -> Unit,     // Колбэк для перехода на экран регистрации
+) {
     // Запрашиваем зал по ID, когда экран загружается
     LaunchedEffect(gumId) {
         gumViewModel.getGumById(gumId)
@@ -49,41 +52,107 @@ fun GumScreen(gumId: Int, gumViewModel: GumViewModel = viewModel()) {
 
     // Отображаем UI в зависимости от того, загрузились данные или нет
     if (gum != null) {
+        // Установка цвета фона
         Surface(
-            modifier = Modifier
-                .padding(8.dp)
-                .border(2.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium),
-            shape = MaterialTheme.shapes.medium,
-            tonalElevation = 2.dp
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
         ) {
-            Row(
-                modifier = Modifier.padding(8.dp)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(15.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(gum.imageName),
-                    contentDescription = "Hall picture",
-                    modifier = Modifier
-                        .size(120.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth() // Заполняем оставшееся пространство
-                ) {
-                    Text(
-                        text = gum.hallName,
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold) // Жирный шрифт
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                // Изображение зала
+                item {
+                    Image(
+                        painter = painterResource(id = gum.imageName),
+                        contentDescription = "Hall Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .clip(RoundedCornerShape(16.dp))
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                }
+
+                // Название зала
+                item {
                     Text(
-                        text = "Тренер: ${gum.coache}",
+                        text = "Адрес: " + gum.hallName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                // Изображение тренера
+                item {
+                    Image(
+                        painter = painterResource(id = gum.coachPhotoId),
+                        contentDescription = "Coach Photo",
+                        modifier = Modifier
+                            .size(250.dp) // Увеличьте размер фото тренера
+                            .clip(CircleShape)
+                    )
+                }
+
+                // Информация о тренере
+                item {
+                    Text(
+                        text = gum.coache,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                item { Spacer(modifier = Modifier.height(8.dp)) }
+
+                item {
+                    Text(
+                        text = gum.coachDescription,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                }
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                // Время тренировок и информация об учениках с обводкой
+                item {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = "Расписание тренировок:",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                item {
                     Text(
-                        text = "Время тренировок:\n${gum.trainingTimeAndStudents}",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = gum.trainingTimeAndStudents,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            .border(1.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium) // Добавляем обводку
+                            .padding(8.dp) // Внутренние отступы внутри обводки
                     )
+                }
+
+                // Кнопка в конце списка
+                item {
+                    Spacer(modifier = Modifier.height(20.dp)) // Отступ перед кнопкой
+
+                    Button(
+                        onClick = { onMainScreen() },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    ) {
+                        Text("Назад")
+                    }
                 }
             }
         }
@@ -91,4 +160,12 @@ fun GumScreen(gumId: Int, gumViewModel: GumViewModel = viewModel()) {
         // Показать что-то, если зал еще не загрузился
         Text("Загрузка данных...")
     }
+}
+
+
+@Preview
+@Composable
+fun PrintGumScreen() {
+    SrcTheme(darkTheme = true) {
+        GumScreen(1, onMainScreen = {})}
 }
