@@ -20,7 +20,10 @@ import kotlinx.coroutines.launch
 data class User(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val username: String,
-    val password: String
+    val password: String,
+    val profilePicture: Int, // Новое поле для картинки
+    val description: String?,    // Новое поле для описания
+    val rating: Int              // Новое поле для оценки
 )
 
 @Dao
@@ -37,9 +40,13 @@ interface UserDao {
     @Query("DELETE FROM users WHERE username = :username")
     suspend fun deleteUserByUsername(username: String)
 
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getUserById(id: Int): User?
+
+
 }
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class], version = 2) // Изменяем версию на 2
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -53,13 +60,16 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // логика для автоматической миграции
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
 }
+
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val userDao = AppDatabase.getDatabase(application).userDao()
@@ -99,6 +109,15 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             userDao.deleteUserByUsername(username)
         }
     }
+
+    // Запрос на получение пользователя по id
+    fun getUserById(id: Int) {
+        viewModelScope.launch {
+            val foundUser = userDao.getUserById(id)
+            _user.postValue(foundUser)
+        }
+    }
+
 }
 
 

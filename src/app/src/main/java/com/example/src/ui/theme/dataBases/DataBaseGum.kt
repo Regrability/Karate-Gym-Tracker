@@ -85,7 +85,6 @@ abstract class GumDatabase : RoomDatabase() {
                     // Обновляем SharedPreferences, чтобы отметить, что первый запуск завершен
                     sharedPreferences.edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
                 }
-
                 instance
             }
         }

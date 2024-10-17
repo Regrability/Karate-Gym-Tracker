@@ -88,7 +88,8 @@ fun MessageCard(message: Gum,
 fun MainScreen(
     gumViewModel: GumViewModel = viewModel(),
     changeTheme: () -> Unit,
-    goToGumScreen: (Int) -> Unit
+    goToGumScreen: (Int) -> Unit,
+    goToUserScreen: () -> Unit
 ) {
     // Вызываем метод для получения всех залов
     gumViewModel.getAllGums()
@@ -114,13 +115,13 @@ fun MainScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp) // Пространство между кнопками
             ) {
                 Button(
-                    onClick = { },
+                    onClick = { goToUserScreen() },
                     modifier = Modifier
                         .weight(1f)          // Каждая кнопка займет половину ширины
                         .padding(8.dp),        // Отступы вокруг кнопки
                     shape = RectangleShape  // Прямоугольная форма кнопки
                 ) {
-                    Text("Найти на карте")
+                    Text("Личный кабинет")
                 }
                 Button(
                     onClick = { changeTheme() },

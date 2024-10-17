@@ -23,7 +23,7 @@ import com.example.src.ui.theme.dataBases.UserViewModel
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit, // Колбэк при успешной авторизации
+    onLoginSuccess: (Int) -> Unit, // Колбэк при успешной авторизации
     onRegister: () -> Unit,     // Колбэк для перехода на экран регистрации
     context: Context,           // Контекст для отображения сообщений об ошибках
 ) {
@@ -115,7 +115,7 @@ fun LoginScreen(
                     // Наблюдение за результатом в LiveData
                     userViewModel.user.observeForever { user ->
                         if (user != null) {
-                            onLoginSuccess()
+                            onLoginSuccess(user.id)
                         } else {
                             errorMessage = "Неверный логин или пароль"
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()

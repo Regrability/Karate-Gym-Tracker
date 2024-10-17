@@ -77,5 +77,8 @@ dependencies {
     implementation(libs.androidx.room.ktx) // Room KTX для упрощённого API
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation (libs.androidx.material)
+
+
 
 }

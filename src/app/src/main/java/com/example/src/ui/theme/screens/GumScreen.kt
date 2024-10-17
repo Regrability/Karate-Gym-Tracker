@@ -158,7 +158,7 @@ fun GumScreen(gumId: Int, gumViewModel: GumViewModel = viewModel(),
         }
     } else {
         // Показать что-то, если зал еще не загрузился
-        Text("Загрузка данных...")
+
     }
 }
 

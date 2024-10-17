@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.src.ui.theme.dataBases.User
 import com.example.src.ui.theme.dataBases.UserViewModel
+import kotlin.random.Random
 
 
 
@@ -151,7 +152,7 @@ fun RegisterScreen(
                         }
                         else {
                             // Если пользователя с таким логином нет, добавляем его в базу данных
-                            userViewModel.insertUser(User(username = username, password = password))
+                            userViewModel.insertUser(User(username = username, password = password, profilePicture = R.drawable.profile_standart, description = "I\'m like karate", rating = Random.nextInt(1, 6)))
                             Toast.makeText(context, "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show()
 
                             // После успешной регистрации выполняем колбэк
