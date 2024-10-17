@@ -136,7 +136,8 @@ fun MainNavGraph(
 
                     // Переход на экран входа
                     navController.navigate("LoginScreen")
-                }
+                },
+                isDarkTh = isDarkTheme
             )
         }
     }

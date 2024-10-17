@@ -30,6 +30,7 @@ fun UserProfileScreen(
     goToMainScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
     userViewModel: UserViewModel = viewModel(),
+    isDarkTh: Boolean
 ) {
     // Запрашиваем данные пользователя по ID
     LaunchedEffect(userId) {
@@ -46,58 +47,74 @@ fun UserProfileScreen(
             color = MaterialTheme.colorScheme.background
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center // Центрируем контент в Box
+                modifier = Modifier.fillMaxSize(),
+                Alignment.TopCenter
             ) {
-                // Изображение используется как фон
+                // Фоновое изображение
                 Image(
-                    painter = painterResource(R.drawable.fon1),
+                    painter = painterResource(if (isDarkTh) R.drawable.fon5 else R.drawable.fon1),
                     contentDescription = "Фон Профиля",
-                    contentScale = ContentScale.Crop, // Масштабирование изображения, чтобы покрыть весь экран
-                    modifier = Modifier.fillMaxSize() // Изображение заполняет весь экран
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally, // Центрируем по горизонтали
-                    verticalArrangement = Arrangement.Center // Центрируем по вертикали
+                    modifier = Modifier.padding(top = 100.dp), // Отступы для колонки
+                    verticalArrangement = Arrangement.Top, // Располагаем элементы сверху
+                    horizontalAlignment = Alignment.CenterHorizontally // Выравниваем по левому краю
                 ) {
-                    // Картинка пользователя
-                    Image(
-                        painter = painterResource(id = user!!.profilePicture),
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(150.dp),
-                        contentScale = ContentScale.Crop
-                    )
 
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Top // Выравниваем по вертикали
+                    ) {
+                        // Картинка пользователя
+                        Image(
+                            painter = painterResource(id = user!!.profilePicture),
+                            contentDescription = "Profile Picture",
+                            modifier = Modifier.size(140.dp), // Уменьшенное изображение
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Column(
+                            horizontalAlignment = Alignment.Start, // Выравниваем текст по левому краю
+                            verticalArrangement = Arrangement.Top
+                        ) {
+                            // Логин пользователя
+                            Text(
+                                text = user!!.username, // Убедитесь, что у вас есть это поле
+                                style = MaterialTheme.typography.headlineLarge, // Большой шрифт
+                                color = if (isDarkTh) Color.White else Color.Black
+                                )
+
+                            // Описание пользователя
+                            Text(
+                                text = user!!.description ?: "No description available",
+                                textAlign = TextAlign.Start,
+                                color = if (isDarkTh) Color.White else Color.Black
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Рейтинг в виде звезд
                     Row(
-                        horizontalArrangement = Arrangement.Center // Центрируем звезды
+                        horizontalArrangement = Arrangement.Start // Располагаем звезды слева
                     ) {
                         repeat(user!!.rating) {
                             Icon(
                                 imageVector = Icons.Filled.Star,
                                 contentDescription = "Star",
                                 tint = Color.Yellow,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(50.dp) // Увеличенные звезды
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Описание пользователя
-                    Text(
-                        text = user!!.description ?: "No description available",
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center // Центрируем текст
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
+                    // Кнопка "Назад"
                     Button(
                         onClick = { goToMainScreen() },
                         modifier = Modifier.fillMaxWidth(0.5f)
@@ -107,6 +124,7 @@ fun UserProfileScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Кнопка "Выйти из аккаунта"
                     Button(
                         onClick = { goToLoginScreen() },
                         modifier = Modifier.fillMaxWidth(0.5f)

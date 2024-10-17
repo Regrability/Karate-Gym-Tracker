@@ -19,7 +19,9 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.src.ui.theme.Purple40
 import com.example.src.ui.theme.dataBases.UserViewModel
+import com.example.src.ui.theme.textColor
 
 @Composable
 fun LoginScreen(
@@ -39,9 +41,10 @@ fun LoginScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+
         // Изображение используется как фон
         Image(
-            painter = painterResource(R.drawable.fon3),
+            painter = painterResource(R.drawable.fon4),
             contentDescription = "Фон",
             contentScale = ContentScale.Crop, // Масштабирование изображения, чтобы покрыть весь экран
             modifier = Modifier.fillMaxSize() // Изображение заполняет весь экран
@@ -56,17 +59,6 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally // Центрирование по горизонтали
         ) {
 
-
-
-            Text(
-                text = "Вход в приложение",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                ),
-                color = Color.Cyan // Цвет текста для контраста
-            )
-
             Spacer(modifier = Modifier.height(16.dp)) // Отступ между элементами
 
             // Поле для ввода логина
@@ -78,10 +70,10 @@ fun LoginScreen(
                     .fillMaxWidth(0.8f)
                     .alpha(0.9f), // Легкая прозрачность для лучшей видимости
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,  // Цвет текста при фокусе
-                    unfocusedTextColor = Color.Blue, // Цвет текста без фокуса
-                    focusedLabelColor = Color.Blue,  // Цвет метки при фокусе
-                    unfocusedLabelColor = Color.Blue // Цвет метки без фокуса
+                    focusedTextColor = textColor,  // Цвет текста при фокусе
+                    unfocusedTextColor = textColor, // Цвет текста без фокуса
+                    focusedLabelColor = textColor,  // Цвет метки при фокусе
+                    unfocusedLabelColor = textColor // Цвет метки без фокуса
                 )
             )
 
@@ -97,10 +89,10 @@ fun LoginScreen(
                     .alpha(0.9f), // Легкая прозрачность для лучшей видимости
                 visualTransformation = PasswordVisualTransformation(),// Скрытие введённого текста
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Blue,  // Цвет текста при фокусе
-                    unfocusedTextColor = Color.Blue, // Цвет текста без фокуса
-                    focusedLabelColor = Color.Blue,  // Цвет метки при фокусе
-                    unfocusedLabelColor = Color.Blue // Цвет метки без фокуса
+                    focusedTextColor = textColor,  // Цвет текста при фокусе
+                    unfocusedTextColor = textColor, // Цвет текста без фокуса
+                    focusedLabelColor = textColor,  // Цвет метки при фокусе
+                    unfocusedLabelColor = textColor // Цвет метки без фокуса
                 )
             )
 
@@ -122,7 +114,7 @@ fun LoginScreen(
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth(0.5f) // Кнопка на половину ширины экрана
+                modifier = Modifier.fillMaxWidth(0.5f), // Кнопка на половину ширины экрана
             ) {
                 Text("Войти") // Текст на кнопке
             }

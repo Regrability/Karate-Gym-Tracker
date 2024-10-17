@@ -159,7 +159,7 @@ abstract class GumDatabase : RoomDatabase() {
                     ),
                     Gum(
                         hallName = "г. Минск, ул. Независимости, д. 12",
-                        coache = "Тренер 6",
+                        coache = "Михнович Александр Викторович",
                         trainingTimeAndStudents = "Чт, Пт - 19:00-21:00 (18+ лет)\nСб, Вс - 11:00 - 13:00 (14-16 лет)",
                         imageName = R.drawable.zal_6,
                         coachPhotoId = R.drawable.coach_6,
