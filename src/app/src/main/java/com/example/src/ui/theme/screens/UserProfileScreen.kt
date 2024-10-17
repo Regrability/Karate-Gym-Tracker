@@ -1,7 +1,9 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.* // Импортируем нужные компоненты
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -21,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.src.R
 import com.example.src.ui.theme.dataBases.UserViewModel
 
@@ -29,6 +33,7 @@ fun UserProfileScreen(
     userId: Int,
     goToMainScreen: () -> Unit,
     goToLoginScreen: () -> Unit,
+    goToEditUserProfileScreen : () -> Unit,
     userViewModel: UserViewModel = viewModel(),
     isDarkTh: Boolean
 ) {
@@ -71,9 +76,13 @@ fun UserProfileScreen(
                     ) {
                         // Картинка пользователя
                         Image(
-                            painter = painterResource(id = user!!.profilePicture),
+                            painter = if (user?.profilePictureURL.isNullOrEmpty()) {
+                                painterResource(id = user!!.profilePicture) // Дефолтная картинка
+                            } else {
+                                rememberAsyncImagePainter(model = user!!.profilePictureURL) // Картинка по URL
+                            },
                             contentDescription = "Profile Picture",
-                            modifier = Modifier.size(140.dp), // Уменьшенное изображение
+                            modifier = Modifier.size(140.dp),
                             contentScale = ContentScale.Crop
                         )
                         Spacer(modifier = Modifier.width(20.dp))
@@ -98,19 +107,31 @@ fun UserProfileScreen(
                     }
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Рейтинг в виде звезд
-                    Row(
-                        horizontalArrangement = Arrangement.Start // Располагаем звезды слева
-                    ) {
-                        repeat(user!!.rating) {
-                            Icon(
-                                imageVector = Icons.Filled.Star,
-                                contentDescription = "Star",
-                                tint = Color.Yellow,
-                                modifier = Modifier.size(50.dp) // Увеличенные звезды
+                    Box(
+                    modifier = Modifier
+                        .width(300.dp) // Ширина внешнего прямоугольника
+                        .height(30.dp) // Высота внешнего прямоугольника
+                        .background(if (isDarkTh) Color.White else Color.Black) // Серый цвет фона
+                ) {
+                    // Прямоугольник для рейтинга
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize() // Занимает всю площадь родительского Box
+                            .padding(2.dp) // Отступ внутри внешнего прямоугольника (по желанию)
+                            .background(
+                                color = when (user!!.rating) {
+                                    1 -> Color.White
+                                    2 -> Color(0xFFFFA500) // Оранжевый
+                                    3 -> Color.Blue
+                                    4 -> Color.Yellow
+                                    5 -> Color.Green
+                                    6 -> Color(0xFFA52A2A) // Коричневый
+                                    7 -> Color.Black
+                                    else -> Color.Gray // Для случаев, когда рейтинг не соответствует
+                                }
                             )
-                        }
-                    }
+                    )
+                }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -122,12 +143,24 @@ fun UserProfileScreen(
                         Text("Назад")
                     }
 
+                    Button(
+                        onClick = { goToEditUserProfileScreen() },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    ) {
+                        Text("Редактировать") // Выравнивание текста по центру)
+
+                    }
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Кнопка "Выйти из аккаунта"
                     Button(
                         onClick = { goToLoginScreen() },
-                        modifier = Modifier.fillMaxWidth(0.5f)
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        colors = ButtonDefaults.buttonColors(
+                           Color.Red, // Задаем красный цвет для кнопки
+                           Color.White
+                        )
                     ) {
                         Text("Выйти из аккаунта")
                     }

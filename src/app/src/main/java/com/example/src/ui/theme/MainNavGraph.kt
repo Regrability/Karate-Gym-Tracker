@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.src.ui.theme.screens.EditUserProfileScreen
 import com.example.src.ui.theme.screens.LoginScreen
 import com.example.src.ui.theme.screens.RegisterScreen
 import com.example.src.ui.theme.screens.MainScreen
@@ -137,8 +138,24 @@ fun MainNavGraph(
                     // Переход на экран входа
                     navController.navigate("LoginScreen")
                 },
+                goToEditUserProfileScreen = {
+                    navController.navigate("EditUserProfileScreen")
+                },
                 isDarkTh = isDarkTheme
             )
         }
+
+        // Экран личного кабинета
+        composable("EditUserProfileScreen") {
+            EditUserProfileScreen(
+                userId = userIdState,
+                goToUserScreen = {
+                    navController.navigate("UserProfileScreen")
+                },
+                context = context,
+                isDarkTh = isDarkTheme,
+            )
+        }
     }
+
 }

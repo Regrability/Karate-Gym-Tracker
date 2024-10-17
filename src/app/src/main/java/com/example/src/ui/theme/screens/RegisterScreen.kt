@@ -145,7 +145,7 @@ fun RegisterScreen(
                         }
                         else {
                             // Если пользователя с таким логином нет, добавляем его в базу данных
-                            userViewModel.insertUser(User(username = username, password = password, profilePicture = R.drawable.profile_standart, description = "I\'m like karate", rating = Random.nextInt(1, 6)))
+                            userViewModel.insertUser(User(username = username, password = password, profilePicture = R.drawable.defould_icon, description = "I\'m like karate", rating = Random.nextInt(1, 6)))
                             Toast.makeText(context, "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show()
 
                             // После успешной регистрации выполняем колбэк

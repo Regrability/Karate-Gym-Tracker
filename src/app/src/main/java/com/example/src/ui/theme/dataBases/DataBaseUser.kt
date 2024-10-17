@@ -23,7 +23,8 @@ data class User(
     val password: String,
     val profilePicture: Int, // Новое поле для картинки
     val description: String?,    // Новое поле для описания
-    val rating: Int              // Новое поле для оценки
+    val rating: Int,              // Новое поле для оценки
+    val profilePictureURL: String? = null,
 )
 
 @Dao
@@ -43,10 +44,12 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getUserById(id: Int): User?
 
+    @Query("UPDATE users SET username = :username, description = :description, rating = :rating, profilePictureURL = :profilePictureURL WHERE id = :userId")
+    suspend fun updateUser(userId: Int, username: String, description: String?, rating: Int, profilePictureURL: String?)
 
 }
 
-@Database(entities = [User::class], version = 2) // Изменяем версию на 2
+@Database(entities = [User::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -115,6 +118,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val foundUser = userDao.getUserById(id)
             _user.postValue(foundUser)
+        }
+    }
+
+    // Метод для обновления пользователя
+    fun updateUser(userId: Int, username: String, description: String?, rating: Int, profilePictureURL: String?) {
+        viewModelScope.launch {
+            userDao.updateUser(userId, username, description, rating, profilePictureURL)
         }
     }
 
