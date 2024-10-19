@@ -152,6 +152,7 @@ fun MainNavGraph(
                 goToUserScreen = {
                     navController.navigate("UserProfileScreen")
                 },
+                onMainScreen = { navController.navigate("MainScreen") }, // Возвращаемся на главный экран
                 context = context,
                 isDarkTh = isDarkTheme,
             )

@@ -44,6 +44,7 @@ import android.widget.Toast
 fun EditUserProfileScreen(
     userId: Int,
     goToUserScreen: () -> Unit,
+    onMainScreen : () -> Unit, // Возвращаемся на главный экран
     userViewModel: UserViewModel = viewModel(),
     isDarkTh: Boolean,
     context: Context
@@ -185,7 +186,7 @@ fun EditUserProfileScreen(
                         userViewModel.updateUser(userId, username, description, rating, profilePictureUrl)
                         val message = "информация пользователя изменена"
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        goToUserScreen()
+                        onMainScreen()
                     },modifier = Modifier.fillMaxWidth(0.5f)) // Кнопка на всю ширину
                     {
                         Text("Сохранить")
