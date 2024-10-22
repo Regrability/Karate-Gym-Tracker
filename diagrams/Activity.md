@@ -10,10 +10,10 @@
 
 ![Вход в аккаунт](images/signInActivityDiagram.png)
 
-### 2. Регистрация<a name="2"></a>
+### 2. Изменение профиля<a name="2"></a>
 
 ![Изменение профиля](images/changeProfileActivityDiagram.png.png)
   
-### 3. Создание события<a name="3"></a>
+### 3. Изменение темы приложения<a name="3"></a>
 
 ![Изменение темы приложения](images/changeTemeActivityDiagram..png)
