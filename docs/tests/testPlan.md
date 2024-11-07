@@ -99,7 +99,7 @@
 ## Представление результатов
 
 Результаты представлены в документе "Результаты тестирования".
-[TestResult](testResult.md.md)
+[TestResult](docs/tests/testResult.md.md)
 
 <a name="conclusion"/>
 
