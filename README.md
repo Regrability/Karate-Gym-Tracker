@@ -4,4 +4,4 @@
 
 [SRS](docs/SRS.md)
 
-[Diagrams](diagrams/)
+[Diagrams](docs/diagrams/)
