@@ -5,3 +5,5 @@
 [SRS](docs/SRS.md)
 
 [Diagrams](docs/diagrams/)
+
+[Tests](docs/tests/)
